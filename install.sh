@@ -12,5 +12,17 @@ install_utilsh()
         "$UTILSH_INSTALL_DIR"/bin/utilsh update
 }
 
-
 install_utilsh
+
+install_full()
+{
+    UTILSH_DIR="$UTILSH_INSTALL_DIR"
+    "$UTILSH_DIR"/bin/utilsh source add https://github.com/ttych/pyv.git
+    "$UTILSH_DIR"/bin/utilsh autoload pyv.sh
+}
+
+case "$1" in
+    full)
+        install_full
+        ;;
+esac
