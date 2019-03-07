@@ -1,0 +1,20 @@
+#!/bin/sh
+
+# to be sourced in a shell session
+
+utilsh()
+{
+    utilsh__command="${1:-}"
+    if [ "$#" -gt 0 ]; then
+        shift
+    fi
+
+    case "$utilsh__command" in
+        load)
+
+        ;;
+        *)
+            command utilsh "$utilsh__command" "$@"
+            ;;
+    esac
+}

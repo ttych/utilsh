@@ -1,0 +1,89 @@
+#!/bin/sh
+
+set -x
+
+UTILSH_DIR=$(cd "${0%/*}/.." ; echo "$PWD")
+UTILSH_SOURCE_DIR="$UTILSH_DIR/target"
+UTILSH_TARGET_DIR="$UTILSH_DIR/target"
+
+
+### init
+
+path_check_in()
+(
+    case $PATH in
+        "$1"|*:"$1"|"$1":*|*:"$1":*)
+            return 0
+            ;;
+    esac
+    return 1
+)
+
+utilsh_init()
+{
+    utilsh_init_env
+    utilsh_init_lib
+}
+
+utilsh_init_env()
+{
+    utilsh_init_env__path=
+    for utilsh_init_env__d in "$UTILSH_DIR/bin" "$UTILSH_TARGET_DIR"; do
+        if ! path_check_in "$utilsh_init_env__d"; then
+            utilsh_init_env__path="${utilsh_init_env__d}${utilsh_init_env__path:+:$utilsh_init_env__path}"
+        fi
+    done
+
+    cat <<EOF
+export UTILSH_DIR="$UTILSH_DIR"
+export PATH="${utilsh_init_env__path:+$utilsh_init_env__path:}$PATH"
+EOF
+}
+
+utilsh_init_lib()
+{
+    cat "$UTILSH_DIR/lib/utilsh.shl"
+}
+
+
+### update
+
+utilsh_update()
+{
+    utilsh_update_fetch
+    utilsh_build
+}
+
+utilsh_update_fetch()
+(
+    cd "$UTILSH_DIR" &&
+        git reset --quiet --hard HEAD &&
+        git pull --no-rebase --ff-only &&
+        git submodule update --recursive
+)
+
+
+### build
+
+utilsh_build()
+{
+    :
+}
+
+
+### main
+
+command="$1"
+case $command in
+    init|update)
+        shift
+        utilsh_"${command}" "$@";
+        status=$?
+        ;;
+    *)
+        echo >&2 "unsupported command $command"
+        status=2
+        ;;
+esac
+
+exit $status
