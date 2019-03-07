@@ -3,7 +3,7 @@
 set -x
 
 UTILSH_DIR=$(cd "${0%/*}/.." ; echo "$PWD")
-UTILSH_SOURCE_DIR="$UTILSH_DIR/target"
+UTILSH_SOURCE_DIR="$UTILSH_DIR/source"
 UTILSH_TARGET_DIR="$UTILSH_DIR/target"
 
 
@@ -50,16 +50,21 @@ utilsh_init_lib()
 
 utilsh_update()
 {
-    utilsh_update_fetch
-    utilsh_build
+    utilsh_update_fetch &&
+        utilsh_build
 }
 
 utilsh_update_fetch()
 (
-    cd "$UTILSH_DIR" &&
-        git reset --quiet --hard HEAD &&
-        git pull --no-rebase --ff-only &&
+    if cd "$UTILSH_DIR"; then
+        if git rev-parse @{u} >/dev/null 2>&1; then
+            git reset --quiet --hard HEAD &&
+                git pull --no-rebase --ff-only
+        fi
         git submodule update --recursive
+    else
+        return 1
+    fi
 )
 
 
