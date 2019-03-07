@@ -4,6 +4,7 @@
 UTILSH_DIR=$(cd "${0%/*}/.." ; echo "$PWD")
 UTILSH_SOURCE_DIR="$UTILSH_DIR/source"
 UTILSH_TARGET_DIR="$UTILSH_DIR/target"
+UTILSH_AUTOLOAD="$UTILSH_DIR/autoload"
 
 
 ### common
@@ -163,8 +164,6 @@ utilsh_source_build()
 
 utilsh_source_build_file()
 {
-    set -x
-
     utilsh_source_build_file_src="$1"
     utilsh_source_build_file_tgt="${UTILSH_TARGET_DIR}/$1"
 
@@ -178,8 +177,25 @@ utilsh_source_build_file()
         *.lib|*.shl) utilsh_source_build_file__right=644 ;;
     esac
     chmod "$utilsh_source_build_file__right" "$utilsh_source_build_file_tgt"
+}
 
-    set +x
+
+### autoload
+
+utilsh_autoload()
+{
+    [ -z "$1" ] && return 0
+
+    utilsh_autoload="$1"
+    case "$utilsh_autoload" in
+        /* )
+            utilsh_autoload="${utilsh_autoload#$UTILSH_TARGET_DIR/}"
+            ;;
+    esac
+
+    if [ -r "$UTILSH_TARGET_DIR/$utilsh_autoload" ]; then
+        echo "$utilsh_autoload" >> "$UTILSH_AUTOLOAD"
+    fi
 }
 
 
@@ -187,7 +203,7 @@ utilsh_source_build_file()
 
 command="$1"
 case $command in
-    build|init|source|update)
+    build|init|source|update|autoload)
         shift
         utilsh_"${command}" "$@";
         status=$?

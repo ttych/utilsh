@@ -2,6 +2,28 @@
 
 # to be sourced in a shell session
 
+UTILSH_TARGET_DIR="$UTILSH_DIR/target"
+UTILSH_AUTOLOAD="$UTILSH_DIR/autoload"
+
+utilsh_autoload()
+{
+    if [ $# -ne 0 ]; then
+        command utilsh autoload "$@"
+        return $?
+    fi
+
+    while read utilsh_autoload__f; do
+        case "$utilsh_autoload__f" in
+            /*) ;;
+            *) utilsh_autoload__f="${UTILSH_TARGET_DIR}/${utilsh_autoload__f}"
+               ;;
+        esac
+        if [ -r "$utilsh_autoload__f" ]; then
+            . "$utilsh_autoload__f"
+        fi
+    done < "$UTILSH_AUTOLOAD"
+}
+
 utilsh()
 {
     utilsh__command="${1:-}"
@@ -11,8 +33,8 @@ utilsh()
 
     case "$utilsh__command" in
         autoload)
-
-        ;;
+            utilsh_autoload "$@"
+            ;;
         load)
 
         ;;
