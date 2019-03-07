@@ -12,6 +12,8 @@ utilsh_autoload()
         return $?
     fi
 
+    [ -r "$UTILSH_AUTOLOAD" ] || return 0
+
     while read utilsh_autoload__f; do
         case "$utilsh_autoload__f" in
             /*) ;;

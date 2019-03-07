@@ -98,6 +98,7 @@ utilsh_build()
 
 
 ### source
+
 utilsh_source()
 {
     utilsh_source__command="$1"
@@ -120,7 +121,8 @@ utilsh_source()
 utilsh_source_add()
 (
     cd "$UTILSH_SOURCE_DIR" &&
-        git clone "$1"
+        git clone "$1" &&
+        utilsh_source build
 )
 
 utilsh_source_rm()
@@ -160,7 +162,7 @@ utilsh_source_build()
     utilsh_source_find | while read utilsh_source_build__f; do
         utilsh_source_build_file "$utilsh_source_build__f"
     done
-)
+)
 
 utilsh_source_build_file()
 {
