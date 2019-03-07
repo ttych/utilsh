@@ -1,0 +1,9 @@
+# ignore source/target files
+/target/*
+!/target/.keep
+
+/source/*
+!/source/.keep
+
+# tmp files
+*~

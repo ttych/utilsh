@@ -1,13 +1,21 @@
 #!/bin/sh
 
-set -x
 
 UTILSH_DIR=$(cd "${0%/*}/.." ; echo "$PWD")
 UTILSH_SOURCE_DIR="$UTILSH_DIR/source"
 UTILSH_TARGET_DIR="$UTILSH_DIR/target"
 
 
-### init
+### common
+
+git_update()
+{
+    if git rev-parse @{u} >/dev/null 2>&1; then
+        git reset --quiet --hard HEAD &&
+            git pull --no-rebase --ff-only
+    fi
+    git submodule update --recursive
+}
 
 path_check_in()
 (
@@ -18,6 +26,9 @@ path_check_in()
     esac
     return 1
 )
+
+
+### init
 
 utilsh_init()
 {
@@ -67,11 +78,7 @@ utilsh_update()
 utilsh_update_fetch()
 (
     if cd "$UTILSH_DIR"; then
-        if git rev-parse @{u} >/dev/null 2>&1; then
-            git reset --quiet --hard HEAD &&
-                git pull --no-rebase --ff-only
-        fi
-        git submodule update --recursive
+        git_update
     else
         return 1
     fi
@@ -82,7 +89,96 @@ utilsh_update_fetch()
 
 utilsh_build()
 {
-    :
+    mkdir -p "$UTILSH_TARGET_DIR" || return 1
+
+    utilsh_source build
+}
+
+
+### source
+utilsh_source()
+{
+    utilsh_source__command="$1"
+    case "$utilsh_source__command" in
+        add|rm)
+            shift
+            utilsh_source_"${utilsh_source__command}" "$@"
+            ;;
+        update|build)
+            shift
+            utilsh_source_iter "utilsh_source_${utilsh_source__command}"
+            ;;
+        *)
+            echo >&2 "unsupported command \"source $1 $@\""
+            return 1
+            ;;
+    esac
+}
+
+utilsh_source_add()
+(
+    cd "$UTILSH_SOURCE_DIR" &&
+        git clone "$1"
+)
+
+utilsh_source_rm()
+(
+    rm -Rf "$UTILSH_SOURCE_DIR/$1"
+)
+
+utilsh_source_update()
+(
+    cd "$1" &&
+        git_update
+)
+
+utilsh_source_iter()
+{
+    utilsh_source_iter__command="$1"
+
+    for utilsh_build__d in "$UTILSH_SOURCE_DIR"/*; do
+        if [ -d "$utilsh_build__d" ]; then
+            "$utilsh_source_iter__command" "$utilsh_build__d" ||
+                echo >&2 "failed to build source $utilsh_build__d"
+        fi
+    done
+}
+
+utilsh_source_find()
+{
+    find . -name '[._]?*' -prune \
+         -o -name 'README.md' -prune \
+         -o -type f -print
+}
+
+utilsh_source_build()
+(
+    cd "$1" || return 1
+
+    utilsh_source_find | while read utilsh_source_build__f; do
+        utilsh_source_build_file "$utilsh_source_build__f"
+    done
+)
+
+utilsh_source_build_file()
+{
+    set -x
+
+    utilsh_source_build_file_src="$1"
+    utilsh_source_build_file_tgt="${UTILSH_TARGET_DIR}/$1"
+
+    sed -e "s;^\#%%load%%  *;. \"$UTILSH_TARGET_DIR\"/;g" \
+        -e "s;^\#%%set_cur_dir%%;SCRIPT_DIR=\"$UTILSH_TARGET_DIR\";g" \
+        -e "s;^\#%%set_cur_file%%;SCRIPT_FILE=\"$utilsh_source_build_file_tgt\";g" \
+        "$utilsh_source_build_file_src" > "$utilsh_source_build_file_tgt"
+
+    utilsh_source_build_file__right=755
+    case "$utilsh_source_build_file_tgt" in
+        *.lib|*.shl) utilsh_source_build_file__right=644 ;;
+    esac
+    chmod "$utilsh_source_build_file__right" "$utilsh_source_build_file_tgt"
+
+    set +x
 }
 
 
@@ -90,7 +186,7 @@ utilsh_build()
 
 command="$1"
 case $command in
-    init|update)
+    build|init|source|update)
         shift
         utilsh_"${command}" "$@";
         status=$?
