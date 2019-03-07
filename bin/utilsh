@@ -72,6 +72,7 @@ EOF
 utilsh_update()
 {
     utilsh_update_fetch &&
+        utilsh_source update &&
         utilsh_build
 }
 
