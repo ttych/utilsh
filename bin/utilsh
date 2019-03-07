@@ -23,6 +23,7 @@ utilsh_init()
 {
     utilsh_init_env
     utilsh_init_lib
+    utilsh_init_autoload
 }
 
 utilsh_init_env()
@@ -42,7 +43,9 @@ EOF
 
 utilsh_init_lib()
 {
-    cat "$UTILSH_DIR/lib/utilsh.shl"
+    cat <<EOF
+. "$UTILSH_DIR/lib/utilsh.shl"
+EOF
 }
 
 
