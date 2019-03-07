@@ -48,6 +48,13 @@ utilsh_init_lib()
 EOF
 }
 
+utilsh_init_autoload()
+{
+    cat <<EOF
+utilsh autoload
+EOF
+}
+
 
 ### update
 
