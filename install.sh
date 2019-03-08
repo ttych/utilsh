@@ -18,7 +18,6 @@ install_full()
 {
     UTILSH_DIR="$UTILSH_INSTALL_DIR"
 
-    "$UTILSH_DIR"/bin/utilsh source add https://github.com/ttych/sh-libs.git
     "$UTILSH_DIR"/bin/utilsh source add https://github.com/ttych/goto.git
     "$UTILSH_DIR"/bin/utilsh source add https://github.com/ttych/pyv.git
     "$UTILSH_DIR"/bin/utilsh source add https://github.com/ttych/wtmux.git

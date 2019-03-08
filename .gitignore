@@ -3,6 +3,7 @@
 !/target/.keep
 
 /source/*
+!/source/common
 !/source/.keep
 
 /autoload
