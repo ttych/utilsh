@@ -152,7 +152,8 @@ utilsh_source_find()
 {
     find . -name '[._]?*' -prune \
          -o -name 'README.md' -prune \
-         -o -type f -print
+         -o -type f -print \
+         -o -type l -print
 }
 
 utilsh_source_build()
