@@ -2,6 +2,7 @@
 
 UTILSH_URL="${UTILSH_URL:-https://github.com/ttych/utilsh.git}"
 UTILSH_INSTALL_DIR="${UTILSH_INSTALL_DIR:-$HOME/.utilsh}"
+UTILSH_INSTALL_MODE="${UTILSH_INSTALL_MODE:-$1}"
 
 install_utilsh()
 {
@@ -31,7 +32,7 @@ install_full()
     "$UTILSH_DIR"/bin/utilsh autoload pyv.sh
 }
 
-case "$1" in
+case "$UTILSH_INSTALL_MODE" in
     full)
         install_full
         ;;
