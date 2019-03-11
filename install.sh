@@ -23,6 +23,8 @@ install_full()
     "$UTILSH_DIR"/bin/utilsh source add https://github.com/ttych/pyv.git
     "$UTILSH_DIR"/bin/utilsh source add https://github.com/ttych/wtmux.git
     "$UTILSH_DIR"/bin/utilsh source add https://github.com/ttych/wwine.git
+    "$UTILSH_DIR"/bin/utilsh source add https://github.com/ttych/installer.git
+    "$UTILSH_DIR"/bin/utilsh source add https://github.com/ttych/extrash.git
 
     "$UTILSH_DIR"/bin/utilsh autoload std.shl
     "$UTILSH_DIR"/bin/utilsh autoload local.shl
