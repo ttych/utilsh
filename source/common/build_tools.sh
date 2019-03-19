@@ -130,6 +130,12 @@ BUILD_TOOLS_TMUX_PREREQ_UBUNTU='libevent-dev'
 BUILD_TOOLS_TMUX_URL_PATTERN='https://github.com/tmux/tmux/releases/download/${version}/tmux-${version}.tar.gz'
 BUILD_TOOLS_TMUX_DEFAULT_VERSION='2.8'
 
+#> jq - jq
+BUILD_TOOLS_JQ_PREREQ_REDHAT=
+BUILD_TOOLS_JQ_PREREQ_UBUNTU=
+BUILD_TOOLS_JQ_URL_PATTERN='https://github.com/stedolan/jq/releases/download/jq-${version}/jq-${version}.tar.gz'
+BUILD_TOOLS_JQ_DEFAULT_VERSION='1.6'
+
 
 build_tools_env()
 {
