@@ -77,7 +77,7 @@ BUILD_TOOLS_VSCODE_URL_PATTERN='https://az764295.vo.msecnd.net/stable/f46c4c469d
 BUILD_TOOLS_VSCODE_DEFAULT_VERSION='1536736541'
 
 #> guile - guile
-BUILD_TOOLS_GUILE_PRERE_REDHAT='libtool-ltdl-devel gmp-devel'
+BUILD_TOOLS_GUILE_PREREQ_REDHAT='libtool-ltdl-devel gmp-devel'
 BUILD_TOOLS_GUILE_URL_PATTERN='https://ftp.gnu.org/gnu/guile/guile-${version}.tar.xz'
 BUILD_TOOLS_GUILE_DEFAULT_VERSION='2.2.3'
 
@@ -131,6 +131,7 @@ BUILD_TOOLS_TMUX_URL_PATTERN='https://github.com/tmux/tmux/releases/download/${v
 BUILD_TOOLS_TMUX_DEFAULT_VERSION='2.8'
 
 #> jq - jq
+BUILD_TOOLS_JQ_CONFIG='--without-oniguruma'
 BUILD_TOOLS_JQ_PREREQ_REDHAT=
 BUILD_TOOLS_JQ_PREREQ_UBUNTU=
 BUILD_TOOLS_JQ_URL_PATTERN='https://github.com/stedolan/jq/releases/download/jq-${version}/jq-${version}.tar.gz'
