@@ -16,8 +16,8 @@ BUILD_TOOLS_RUBY_URL_PATTERN='http://cache.ruby-lang.org/pub/ruby/ruby-${version
 BUILD_TOOLS_RUBY_DEFAULT_VERSION='2.4.3'
 
 #> python - python interpreter
-BUILD_TOOLS_PYTHON_PREREQ_REDHAT='readline-devel openssl-devel libffi-devel tk-devel sqlite-devel'
-BUILD_TOOLS_PYTHON_PREREQ_UBUNTU='libreadline-dev libssl-dev libffi-dev tk-dev libsqlite3-dev'
+BUILD_TOOLS_PYTHON_PREREQ_REDHAT='readline-devel openssl-devel libffi-devel tk-devel sqlite-devel bzip2-devel'
+BUILD_TOOLS_PYTHON_PREREQ_UBUNTU='libreadline-dev libssl-dev libffi-dev tk-dev libsqlite3-dev libbz2-dev'
 BUILD_TOOLS_PYTHON_URL_PATTERN='https://www.python.org/ftp/python/${version}/Python-${version}.tgz'
 BUILD_TOOLS_PYTHON_DEFAULT_VERSION='3.6.6'
 
