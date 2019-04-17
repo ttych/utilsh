@@ -91,6 +91,14 @@ BUILD_TOOLS_KEEPASSX_PREREQ_UBUNTU='libgcrypt20-dev'
 BUILD_TOOLS_KEEPASSX_URL_PATTERN='https://www.keepassx.org/releases/${version}/keepassx-${version}.tar.gz'
 BUILD_TOOLS_KEEPASSX_DEFAULT_VERSION='2.0.3'
 
+#> keepassxc - KeePassXC
+BUILD_TOOLS_KEEPASSXC_URL_PATTERN='https://github.com/keepassxreboot/keepassxc/releases/download/${version}/KeePassXC-${version}-x86_64.AppImage'
+BUILD_TOOLS_KEEPASSXC_DEFAULT_VERSION='2.4.1'
+
+#> cmake - CMake
+BUILD_TOOLS_CMAKE_URL_PATTERN='https://github.com/Kitware/CMake/releases/download/v${version}/cmake-${version}.tar.gz'
+BUILD_TOOLS_CMAKE_DEFAULT_VERSION='3.14.2'
+
 #> nodejs - nodejs
 BUILD_TOOLS_NODEJS_PREREQ_REDHAT=
 BUILD_TOOLS_NODEJS_PREREQ_UBUNTU=

@@ -56,7 +56,7 @@ dist_build_configure()
     dist_build_prefix "$1" || return 1
     dist_build_configure="$dist_build_prefix/${PWD##*/}"
     mkdir -p "$dist_build_configure" && \
-        ./configure --prefix "$dist_build_configure" $2 && \
+        ./configure --prefix="$dist_build_configure" $2 && \
         make && \
         make install
 }
@@ -80,7 +80,18 @@ dist_build_copy()
         dist_build_copy__target="$dist_build_prefix/${PWD##*/}"
     fi
     mkdir -p "$dist_build_copy__target" && \
-        cp -Rf '.' "$dist_build_copy__target"
+        cp -Rf '.' "$dist_build_copy__target" &&
+        dist_build_fix_right "$dist_build_copy__target"
+}
+
+dist_build_fix_right()
+{
+    cd "$1" || return 1
+    for dist_build_fix_right__f in *.AppImage; do
+        if [ -r "$dist_build_fix_right__f" ]; then
+            chmod +x "$dist_build_fix_right__f"
+        fi
+    done
 }
 
 dist_build()
